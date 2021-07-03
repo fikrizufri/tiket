@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
         $superadminUser->slug = Str::slug('Superadmin');
         $superadminUser->email = 'superadmin@admin.com';
         $superadminUser->password = bcrypt('secret');
-        $superadminUser->telp = '017397137';
+        $superadminUser->hp = '017397137';
         // $superadminUser->icon = 'default-icon.png';
         $superadminUser->save();
 

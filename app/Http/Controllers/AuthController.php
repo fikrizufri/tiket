@@ -104,7 +104,7 @@ class AuthController extends Controller
         $nama = $request->nama;
         $email    = $request->email;
         $password = $request->password;
-        $telp = $request->telp;
+        $hp = $request->hp;
 
         $customerRole = Role::where('slug', 'customer')->first();
 
@@ -115,7 +115,7 @@ class AuthController extends Controller
             $customerUser->slug = Str::slug($nama);
             $customerUser->email = $email;
             $customerUser->password = bcrypt($password);
-            $customerUser->telp = $telp;
+            $customerUser->hp = $hp;
             // $customerUser->icon = 'default-icon.png';
             $customerUser->save();
 
