@@ -121,7 +121,6 @@ class AuthController extends Controller
             $customerUser->email = $email;
             $customerUser->password = bcrypt($password);
             $customerUser->hp = $hp;
-            // $customerUser->icon = 'default-icon.png';
             $customerUser->save();
 
             $customerUser->role()->attach($customerRole);
