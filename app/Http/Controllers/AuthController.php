@@ -102,7 +102,7 @@ class AuthController extends Controller
             'hp' => 'unique:users',
         ]);
         if ($validator->fails()) {
-            $response = ['message' => $validator->errors()->all()];
+            $response = ['message' => $validator->errors()];
             return response($response, 422);
         }
 
