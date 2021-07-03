@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Validator;
+use Validator;
+
 
 class AuthController extends Controller
 {
@@ -96,6 +99,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:255|unique:users',
+            'hp' => 'unique:users',
         ]);
         if ($validator->fails()) {
             $response = ['message' => $validator->errors()->all()];
@@ -107,9 +111,9 @@ class AuthController extends Controller
         $password = $request->password;
         $hp = $request->hp;
 
-        $customerRole = Role::where('slug', 'customer')->first();
-
         try {
+            $customerRole = Role::where('slug', 'customer')->first();
+
             $customerUser = new User();
             $customerUser->nama = $nama;
             $customerUser->username = $nama;
@@ -122,7 +126,7 @@ class AuthController extends Controller
 
             $customerUser->role()->attach($customerRole);
 
-            $response = ['message' => 'You have been successfully logged out!'];
+            $response = ['message' => 'You have been successfully register!'];
             return response($response, 200);
         } catch (\Throwable $th) {
             $response = ['message' => 'something error'];
