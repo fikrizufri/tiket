@@ -89,4 +89,22 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
+
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email|max:255|unique:users',
+        ]);
+        if ($validator->fails()) {
+            return response(['errors' => $validator->errors()->all()], 422);
+        }
+
+        $name = $request->name;
+        $email    = $request->email;
+        $password = $request->password;
+        User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+
+        $response = ['message' => 'You have been successfully logged out!'];
+        return response($response, 200);
+    }
 }
