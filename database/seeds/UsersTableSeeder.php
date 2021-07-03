@@ -23,6 +23,11 @@ class UsersTableSeeder extends Seeder
         $adminRole->slug = 'admin';
         $adminRole->save();
 
+        $customerRole = new Role();
+        $customerRole->nama = 'Customer';
+        $customerRole->slug = 'customer';
+        $customerRole->save();
+
         $superadmin = Role::where('slug', 'superadmin')->first();
         $adminRole = Role::where('slug', 'admin')->first();
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -96,15 +97,35 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
         ]);
         if ($validator->fails()) {
-            return response(['errors' => $validator->errors()->all()], 422);
+            $response = ['message' => $validator->errors()->all()];
+            return response($response, 422);
         }
 
-        $name = $request->name;
+        $nama = $request->nama;
         $email    = $request->email;
         $password = $request->password;
-        User::create(['name' => $name, 'email' => $email, 'password' => Hash::make($password)]);
+        $telp = $request->telp;
 
-        $response = ['message' => 'You have been successfully logged out!'];
-        return response($response, 200);
+        $customerRole = Role::where('slug', 'customer')->first();
+
+        try {
+            $customerUser = new User();
+            $customerUser->nama = $nama;
+            $customerUser->username = $nama;
+            $customerUser->slug = Str::slug($nama);
+            $customerUser->email = $email;
+            $customerUser->password = bcrypt($password);
+            $customerUser->telp = $telp;
+            // $customerUser->icon = 'default-icon.png';
+            $customerUser->save();
+
+            $customerUser->role()->attach($customerRole);
+
+            $response = ['message' => 'You have been successfully logged out!'];
+            return response($response, 200);
+        } catch (\Throwable $th) {
+            $response = ['message' => 'something error'];
+            return response($response, 422);
+        }
     }
 }
